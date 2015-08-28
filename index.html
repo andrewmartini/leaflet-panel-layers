@@ -1,74 +1,51 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"> 
-<head> 
-<title>Leaflet Panel Layers</title> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<link rel="stylesheet" href="style.css" />
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Layers Control Example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../dist/leaflet.css" />
 </head>
+<body>
+	<div id="map" style="width: 600px; height: 400px"></div>
 
-<body id="home">
-<h2>Leaflet Panel Layers</h2>
-<p>
-	Leaflet Control Layers extended for <b>group of layers</b> and <b>icons legend</b>.
-	<iframe style="vertical-align:bottom" src="http://ghbtns.com/github-btn.html?user=stefanocudini&amp;repo=leaflet-panel-layers&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="104px" height="20px"></iframe>
-	<br />
-	Other useful stuff for <a href="http://labs.easyblog.it/maps/">Web Mapping...</a>
-</p>
+	<script src="../dist/leaflet.js"></script>
+	<script>
+		var cities = new L.LayerGroup();
 
-<div style="float:left;width:30%">
-	<h4>Features</h4>
-	<ul id="ff">
-		<li>Grouping of layers</li>
-		<li>Custom layer Icon</li>
-		<li>Auto collapsible layers list</li>
-		<li>Infinite scrollable list of layers</li>
-		<li>Configurable panel from JSON</li>
-		<li>Grouping of multiple layers</li>
-		<li>Embeddable GeoJSON layers</li>
-		<li>Add layers dynamically</li>
-	</ul>
-	<h4>Examples</h4>
-	<ul id="examples">
-		<li><a href="examples/icon-layer.html">Icon layer</a></li>
-		<li><a href="examples/collapsible-panel.html">Collapsible panel</a></li>
-		<li><a href="examples/group-layers.html">Group of layers</a></li>
-		<!--li><a href="examples/layer-separator.html">Layer separator</a></li-->		
-		<li><a href="examples/dynamic-layers.html">Dynamic layers list</a></li>
-		<li><a href="examples/embedded-layers.html">Embedded layers</a></li>
-	</ul>
-</div>
+		L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
+		L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
+		L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
+		L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
-<div style="float:left;width:30%">
-	<h4>Code repositories</h4>
-	<a target="_blank" href="https://github.com/stefanocudini/leaflet-panel-layers">Github.com</a>
-	<br />
-	<a target="_blank" href="https://www.npmjs.org/package/leaflet-panel-layers">Node Packaged Module</a>
-	<br />	
- 	<a target="_blank" href="https://bitbucket.org/zakis_/leaflet-panel-layers">Bitbucket.org</a>
-	<br />
-<!--	<a target="_blank" href="https://atmosphere.meteor.com/package/leaflet-panel-layers">Atmosphere Meteor JS</a>
-	<br />	 -->
 
-	<h4>Website</h4>
-	<a href="http://labs.easyblog.it/maps/leaflet-panel-layers">labs.easyblog.it/maps/leaflet-panel-layers</a>
-		<br />
+	    var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ';
 
-	<h4>Download</h4>
-	<ul>
-		<li><a href="https://github.com/stefanocudini/leaflet-panel-layers/archive/master.zip">Dev Last Version (.zip)</a></li>
-		<li><a href="dist/leaflet-panel-layers.src.js">Source Code (.js)</a></li>
-		<li><a href="dist/leaflet-panel-layers.min.js">Compressed (.min.js)</a></li>		
-	</ul>
-</div>
+	    var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+		    streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
 
-<div id="copy"><a href="http://labs.easyblog.it/">Labs</a> &bull; <a rel="author" href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a></div>
-<a href="https://github.com/stefanocudini/leaflet-panel-layers"><img id="ribbon" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+		var map = L.map('map', {
+			center: [39.73, -104.99],
+			zoom: 10,
+			layers: [grayscale, cities]
+		});
 
-<div id="comments">
-	<div id="disqus_thread"></div>
-</div>
+		var baseLayers = {
+			"Grayscale": grayscale,
+			"Streets": streets
+		};
 
-<script type="text/javascript" src="/labs-common.js"></script>
+		var overlays = {
+			"Cities": cities
+		};
 
+		L.control.layers(baseLayers, overlays).addTo(map);
+	</script>
 </body>
 </html>
